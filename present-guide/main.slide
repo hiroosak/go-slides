@@ -1,0 +1,103 @@
+go-toolのpresentで作ったスライドショーを公開する
+30 Aug 2014
+
+taizo
+@taizo
+http://qiita.jp/taizo
+
+* ローカルでの閲覧
+
+presentを使ってローカルにスライドショーを作成する。
+
+  $ go get code.google.com/p/go.tools/cmd/present
+
+presentが使えるように
+
+  $ present --help
+    Usage of present:
+    -base="": base path for slide template and static resources
+    -http="127.0.0.1:3999": HTTP service address (e.g., '127.0.0.1:3999')
+    -nacl=false: use Native Client environment playground (prevents non-Go code execution)
+    -orighost="": host component of web origin URL (e.g., 'localhost')
+    -play=true: enable playground (permit execution of arbitrary user code)
+
+* .articleと.slide
+
+- スライドショーを作りたい場合はファイルの拡張子を*.slide*
+- 記事を作りたい場合はファイルの拡張子を*.article*
+
+* presentのフォーマット
+
+* ヘッダー
+
+各ファイルの頭はスライドのタイトル名
+次の段落は(主に)プロフィール名になる
+
+  タイトル (必須)
+  サブタイトル
+  15:04 2 Jan 2006
+  Tags: タグ
+  <空行>
+  プロフィール
+  …
+  <空行>
+  内容
+
+最初のタイトルが必須。それ以下はオプションになる。
+またプロフィールは、タイトルの段落から空行を1行入れて記載していく。
+二段落目は、スライドの最初と最後に挿入される。
+
+* セクション
+
+  * スライドタイトル もしくはセクション
+  ** サブセクション
+  *** さらにサブセクション
+
+セクションを連続して置いた場合、前者のページのタイトルは下側に表示される。
+このスライドの4枚目。
+
+* 箇条書き
+
+- オレンジ
+- リンゴ
+- バナナ
+
+実際のテキスト
+
+  - オレンジ
+  - リンゴ
+  - バナナ
+
+* テキスト
+
+テキストは改行は
+普通の改行でOK
+
+  インデントをしたら<pre>になる
+
+実際のテキスト
+
+  テキストは改行は
+  普通の改行でOK
+  
+    インデントをしたら<pre>になる
+
+* コードの挿入
+
+コードは *別ファイルに置く* 。
+
+  .code <ファイル名>
+
+.code foo.go
+
+  # コードの一部を見せたい場合 後ろに
+  # /開始箇所/,/終了箇所/ で指定する
+  .code <ファイル名> /^func main/,/^}/
+
+.code foo.go /^func main/,/^}/
+
+* Playgroundで実行出来るUIをつける
+
+  .play <ファイル名>
+
+.play foo.go
